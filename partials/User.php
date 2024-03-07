@@ -106,6 +106,42 @@ class User extends database
 
 
     // Function to Upload Photo
+    public function uploadPhoto($file)
+    {
+        if (!(empty($file))) {
+
+            // * Storyline:
+            // * 1. Getting an arg as "File type"
+            // * 2. Need to give temporary name.
+
+            $fileTempPath = $file['tmp_name']; // 2. 
+            $fileName = $file['name'];
+            $fileType = $file['type'];
+            $fileNameCmps = explode('.', $fileName);
+            $fileExtension = strtolower(end($fileNameCmps));
+
+            // * Giving file name to store in db using md5()
+            $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
+
+            // * Need to give allowed extension types in Array format.
+            $allowedExtn = ["jpg", "png", "jpeg"];
+
+            if (in_array($fileExtension, $allowedExtn)) {
+                // Getting current directory and giving saving folder
+                $uploadFileDir = getcwd() . '/uploads';
+
+
+                // Set the destination path
+                $destFilePath = $uploadFileDir . $newFileName;
+
+                // Now sending picture to save directory
+                if (move_uploaded_file($fileTempPath, $destFilePath)) {
+
+                    return $newFileName;
+                }
+            }
+        }
+    }
 
 
 
