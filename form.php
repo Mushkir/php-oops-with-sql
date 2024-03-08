@@ -59,8 +59,12 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-dark">Save changes</button>
+                    <button type="submit" class="btn btn-dark">Submit</button>
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+
+                    <!-- 2 Input fields such as ADD, and UPDATE, DELETE or VIEW -->
+                    <input type="hidden" name="action" value="Add user">
+                    <input type="hidden" name="userId" id="userId" value="">
                 </div>
             </form>
         </div>
