@@ -382,7 +382,53 @@
                 })
             })
 
+            // Delete Request
+            $(document).on("click", "#delBtn", function(e) {
 
+                e.preventDefault();
+
+                // Storyline
+                // 1. Need to get the id
+                const userID = $(this).attr("href")
+
+                // 2. Send the request to server
+                $.ajax({
+
+                    url: 'ajax.php',
+                    type: 'GET',
+                    data: {
+                        'userID': userID
+                    },
+                    success: function(response) {
+                        // console.log(response);
+
+                        const userFirstName = JSON.parse(response).first_name
+
+                        Swal.fire({
+                            title: `Are you sure to delete ${userFirstName}?`,
+                            text: "You won't be able to revert this!",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Yes, delete it!"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                Swal.fire({
+                                    title: "Deleted!",
+                                    text: "Your file has been deleted.",
+                                    icon: "success"
+                                });
+
+                                showAllUsers();
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                    }
+                })
+            })
         });
     </script>
 </body>

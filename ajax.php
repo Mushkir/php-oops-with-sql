@@ -99,3 +99,11 @@ if (isset($_GET['userID'])) {
     // Send the response to frontend and change it as JSON format using parse().
     // echo var_dump($userData);
 }
+
+
+if (isset($_GET['userID'])) {
+
+    $userID = $_GET['userID'];
+
+    $db->delete($userID);
+}
