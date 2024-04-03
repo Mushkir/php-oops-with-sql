@@ -20,39 +20,6 @@ $(document).ready(function () {
     });
   }
 
-  // JQuery for Insert Process
-  // Storyline
-  // 1. Select the Form Element
-  // $(document).on("submit", "#form-data", function(e) {
-
-  //     e.preventDefault();
-
-  //     // 2. Send the Ajax request to the server
-  //     $.ajax({
-
-  //         url: 'ajax.php',
-  //         type: 'POST',
-  //         processData: false,
-  //         contentType: false,
-  //         data: new FormData(this),
-  //         beforeSend: function() {
-  //             console.log("Request sending from #form-data");
-  //         },
-  //         success: function(response) {
-
-  //             // console.log(response);
-  //             Swal.fire({
-  //                 title: 'User Added Successfully!',
-  //                 icon: 'success'
-  //             })
-  //             showAllUsers();
-  //             $("#form-data")[0].reset();
-
-  //         },
-  //         error: function() {}
-  //     })
-
-  // })
   $("#insertUser").click(function (e) {
     e.preventDefault();
 
@@ -198,6 +165,52 @@ $(document).ready(function () {
         $("#userLastName")[0].value = jsonData.last_name;
         $("#userEmailAdd")[0].value = jsonData.email;
         $("#userPhoneNo")[0].value = jsonData.phone;
+      },
+      error: function (xhr, status, error) {
+        console.log(xhr.responseText);
+      },
+    });
+  });
+
+  // Delete Request
+  $(document).on("click", "#delBtn", function (e) {
+    e.preventDefault();
+
+    // Storyline
+    // 1. Need to get the id
+    const userID = $(this).attr("href");
+
+    // 2. Send the request to server
+    $.ajax({
+      url: "ajax.php",
+      type: "GET",
+      data: {
+        userID: userID,
+      },
+      success: function (response) {
+        // console.log(response);
+
+        const userFirstName = JSON.parse(response).first_name;
+
+        Swal.fire({
+          title: `Are you sure to delete ${userFirstName}?`,
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success",
+            });
+
+            showAllUsers();
+          }
+        });
       },
       error: function (xhr, status, error) {
         console.log(xhr.responseText);
